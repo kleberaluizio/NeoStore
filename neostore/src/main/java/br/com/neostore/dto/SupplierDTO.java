@@ -9,7 +9,7 @@ public class SupplierDTO {
     private String name;
     @Email(message = "Por favor, digite um e-mail válido")
     private String email;
-    private String comment;
+    private String description;
     @NotBlank(message = "O cnpj não pode estar em branco")
     @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", message = "Por favor, digite um cnpj válido")
     private String cnpj;
@@ -28,11 +28,11 @@ public class SupplierDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
     public String getCnpj() {
         return cnpj;

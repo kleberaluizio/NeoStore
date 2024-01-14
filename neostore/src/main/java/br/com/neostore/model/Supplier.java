@@ -11,7 +11,7 @@ public class Supplier {
     private int id;
     private String name;
     private String email;
-    private String comment;
+    private String description;
     private String cnpj;
 
     public Supplier(){
@@ -34,11 +34,11 @@ public class Supplier {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
     public String getCnpj() {
         return cnpj;
@@ -52,11 +52,11 @@ public class Supplier {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Supplier that = (Supplier) object;
-        return Objects.equals(this.cnpj, that.cnpj);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(description, that.description) && Objects.equals(cnpj, that.cnpj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, comment, cnpj);
+        return Objects.hash(id, name, email, description, cnpj);
     }
 }

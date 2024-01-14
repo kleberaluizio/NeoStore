@@ -1,0 +1,11 @@
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/repository/ISupplierRepository.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/repository/SupplierRepository.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/controller/SupplierController.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/dto/SupplierDTO.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/service/ISupplierService.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/service/SupplierService.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/util/ConstraintViolationExceptionMapper.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/Main.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/dto/PaginatedResponseDTO.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/model/Supplier.java
+/home/kleberaluizio/Documents/Personal/Software-Development/Workspace/seletivos/NeoStore/neostore/src/main/java/br/com/neostore/util/JPAUtil.java
