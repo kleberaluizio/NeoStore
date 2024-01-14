@@ -1,9 +1,5 @@
 package br.com.neostore.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -13,13 +9,9 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank(message = "O nome não pode estar em branco")
     private String name;
-    @Email(message = "Por favor, digite um e-mail válido")
     private String email;
     private String comment;
-    @NotBlank(message = "O cnpj não pode estar em branco")
-    @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", message = "Por favor, digite um cnpj válido")
     private String cnpj;
 
     public Supplier(){
