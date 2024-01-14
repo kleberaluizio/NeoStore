@@ -1,8 +1,0 @@
-br/com/neostore/model/Supplier.class
-br/com/neostore/dto/SupplierDTO.class
-br/com/neostore/repository/SupplierRepository.class
-br/com/neostore/service/SupplierService.class
-br/com/neostore/service/ISupplierService.class
-br/com/neostore/Main.class
-br/com/neostore/repository/ISupplierRepository.class
-br/com/neostore/controller/SupplierController.class
