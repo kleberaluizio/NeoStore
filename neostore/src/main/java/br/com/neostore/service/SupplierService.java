@@ -22,7 +22,7 @@ public class SupplierService implements ISupplierService{
         Supplier existingSupplier = supplierRepository.findByCnpj(supplierDTO.getCnpj());
 
         if (existingSupplier != null) {
-            throw new EntityExistsException("Erro: CNPJ fornecido já está registrado em nosso sistema");
+            throw new EntityExistsException("CNPJ fornecido já está registrado em nosso sistema.");
         }
 
         Supplier newSupplier = convertDTOtoEntity(supplierDTO);
@@ -40,7 +40,6 @@ public class SupplierService implements ISupplierService{
                 suppliersToBeAdded.add(supplier);
             }catch (Exception e){
                 notAddedSuppliers.add(jsonValue);
-                e.printStackTrace();
             }
         }
         supplierRepository.addSuppliers(suppliersToBeAdded);
@@ -61,8 +60,10 @@ public class SupplierService implements ISupplierService{
         Supplier existingSupplier = supplierRepository.findById(id);
 
         if(existingSupplier == null){
-            throw new EntityNotFoundException(String.format("Erro: Fornecedor (id = %d) não encontrado em nossos registros.",id));
+            throw new EntityNotFoundException(String.format("Fornecedor (id = %d) não encontrado em nossos registros.",id));
         }
+
+        verifyIfUpdatedCnpjExists(existingSupplier,supplierDTO);
 
         Supplier updatedSupplier = convertDTOtoEntity(supplierDTO);
         updatedSupplier.setId(id);
@@ -71,12 +72,25 @@ public class SupplierService implements ISupplierService{
             supplierRepository.update(updatedSupplier);
         }
     }
+
+    private void verifyIfUpdatedCnpjExists(Supplier existingSupplierById, SupplierDTO supplierDTO) {
+
+        if (existingSupplierById.getCnpj().equals(supplierDTO.getCnpj())){
+           return;
+        }
+        Supplier existingSupplierByCnpj = supplierRepository.findByCnpj(supplierDTO.getCnpj());
+
+        if (supplierRepository.findByCnpj(supplierDTO.getCnpj()) != null) {
+            throw new EntityExistsException("Não foi possivel realizar a atualização. CNPJ fornecido já está registrado em nosso sistema");
+        }
+    }
+
     @Override
     public void deleteSupplierById(int id) {
         Supplier existingSupplier = supplierRepository.findById(id);
 
         if (existingSupplier == null) {
-            throw new EntityNotFoundException(String.format("Erro: Fornecedor (id = %d) não encontrado em nossos registros.",id));
+            throw new EntityNotFoundException(String.format("Fornecedor (id = %d) não encontrado em nossos registros.",id));
         }
 
         supplierRepository.delete(existingSupplier);

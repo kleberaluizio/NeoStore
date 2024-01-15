@@ -30,7 +30,7 @@ public class SupplierController {
         try{
             supplierService.createSupplier(supplierDTO);
         }catch(EntityExistsException e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }catch (Exception e){
             String errorMessage = "Error: " + e.getMessage();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
@@ -82,9 +82,8 @@ public class SupplierController {
             supplierService.updateSupplier(id, supplierDTO);
         } catch (EntityNotFoundException e){
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
-        } catch (Exception e){
-            String errorMessage = "Error: " + e.getMessage();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity( e.getMessage()).build();
         }
         return Response.status(Response.Status.OK).build();
     }

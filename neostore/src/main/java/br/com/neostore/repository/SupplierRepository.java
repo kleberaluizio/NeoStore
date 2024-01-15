@@ -3,6 +3,7 @@ package br.com.neostore.repository;
 import br.com.neostore.model.Supplier;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -18,19 +19,29 @@ public class SupplierRepository implements ISupplierRepository{
 
     @Override
     public void add(Supplier supplier) {
-        openConnection();
-        entityManager.persist(supplier);
-        closeConnection();
+        try {
+            openConnection();
+            entityManager.persist(supplier);
+        }catch (Exception e){
+            throw new PersistenceException(" ");
+        }finally {
+            closeConnection();
+        }
     }
 
     @Override
     public void addSuppliers(List<Supplier> suppliers) {
         if (!suppliers.isEmpty()) {
-            openConnection();
-            for (Supplier supplier : suppliers) {
-                this.entityManager.persist(supplier);
+            try {
+                openConnection();
+                for (Supplier supplier : suppliers) {
+                    this.entityManager.persist(supplier);
+                }
+            }catch (Exception e){
+
+            }finally {
+                closeConnection();
             }
-            closeConnection();
         }
     }
 
@@ -46,7 +57,7 @@ public class SupplierRepository implements ISupplierRepository{
         try {
             return entityManager.find(Supplier.class,id);
         }catch (Exception e){
-            return null;
+            throw new PersistenceException("Erro no banco de dados");
         }
     }
 

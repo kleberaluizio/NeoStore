@@ -31,9 +31,7 @@
 
     <suppliers ng-include="'app/component/paginated-suppliers.template.html'"></suppliers>
 
-    <div class="btn_body">
-        <button ng-if="!mainCtrl.displayForm" type="reset" class="btn btn-primary" id="button" ng-click="mainCtrl.executeWhenCadastrarButtonClicked()">Cadastrar novo fornecedor</button>
-    </div>
+    <button ng-if="!mainCtrl.displayForm" type="reset" class="btn btn-primary btn_body" id="button" ng-click="mainCtrl.executeWhenCadastrarButtonClicked()">Cadastrar novo fornecedor</button>
 
     <div ng-if="mainCtrl.displayForm" class="container">
         <h3 class="text-center py-1"> {{ mainCtrl.isSupplierToBeUpdated ?  'Atualizar Fornecedor' : 'Cadastrar Fornecedor' }}</h3>
@@ -72,7 +70,7 @@
                     <label for="cnpj-input" class="col-2 col-form-label">CNPJ</label>
                     <div class="col-10">
                         <input class="form-control cnpj" type="text" name="cnpj" ng-model="mainCtrl.tempSupplier.cnpj"
-                            ng-required="true">
+                            ng-required="true" ng-pattern="/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/">
                         <div class="error-messages" ng-messages="formulario.cnpj.$error" ng-if="formulario.cnpj.$touched || formulario.$submitted">
                             <div class="error-message" ng-message="pattern || required">Campo obrigatório, insira um cnpj válido. </div>
                         </div>

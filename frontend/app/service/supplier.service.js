@@ -1,8 +1,13 @@
 app.service('supplierService',['$http',function($http){
     const URL = "http://localhost:8080/supplier/";
+    const CONFIG = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
 
     this.createSupplier = function(supplier){
-        return $http.post(URL, supplier)
+        return $http.post(URL, supplier,CONFIG)
     };
 
     this.getAllSuppliers = function(){

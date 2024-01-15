@@ -8,11 +8,14 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
     self.createSupplier = function (form) {
         form.$submitted = true;
         if (!form.$valid) { return; }
-        supplierService.createSupplier(self.tempSupplier).then(function (response) {
-            swal("Fornecedor cadastrado com sucesso!", "", "success");
-            executeAfterHttpRequest();
-            cleanFormMessages(form);
-        })
+        supplierService.createSupplier(self.tempSupplier)
+            .then(function successCallback(response) {
+                swal("Fornecedor cadastrado com sucesso!", "", "success");
+                executeAfterHttpRequest();
+                cleanFormMessages(form);
+            }).catch(function errorCallback(error) {
+                exceptionHandler(error);
+            });
     }
 
     /* PAGINACAO */
@@ -74,13 +77,13 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
 
     /* PAGINACAO */
 
-    self.updateSupplier = function (form) {
-        form.$submitted = true;
-        if (!form.$valid) { return; }
+    self.updateSupplier = function () {
         supplierService.updateSupplier(self.tempSupplier, self.tempSupplier.id).then(function (response) {
             swal("Fornecedor atualizado com sucesso!", "", "success");
             executeAfterHttpRequest();
-        })
+        }).catch(function errorCallback(error) {
+            exceptionHandler(error);
+        });
     }
 
     self.prepareToUpdate = function (supplier) {
@@ -98,7 +101,9 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
     }
 
     self.executeWhenUpdateButtonClicked = function (form) {
-        self.updateSupplier(form);
+        form.$submitted = true;
+        if (!form.$valid) { return; }
+        self.updateSupplier();
         cleanFormMessages(form);
         self.cleanData();
         self.isSupplierToBeUpdated = false;
@@ -137,12 +142,20 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         form.$submitted = false;
         form.$setUntouched();
     }
+    function exceptionHandler(error){
+        let match = /p0=([^&]+)/.exec(error.message);
+
+                if (match && match[1]) {
+                    let mensagem = decodeURIComponent(match[1]);
+                    swal(mensagem, "", "warning");
+                }
+    }
 
     $scope.$watch('mainCtrl.displayForm', function (newValue, oldValue) {
         if (newValue !== oldValue) {
-            $timeout(function() {
+            $timeout(function () {
                 enableCleave();
-            });        
+            });
         }
     });
 
@@ -151,7 +164,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         self.tempSupplier = {};
         self.getAllSuppliers();
     };
-    $scope.init();    
+    $scope.init();
 
     function enableCleave() {
         angular.element(document).ready(function () {
@@ -162,5 +175,5 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
             });
         });
     }
- 
+
 }]);
