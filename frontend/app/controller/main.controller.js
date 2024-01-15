@@ -3,13 +3,14 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
     var self = this;
 
 
+    // 
     self.createSupplier = function (form) {
         form.$submitted = true;
         if (!form.$valid) { return; }
-        console.log('supplier', self.tempSupplier)
         supplierService.createSupplier(self.tempSupplier).then(function (response) {
             swal("Fornecedor cadastrado com sucesso!", "", "success");
             executeAfterHttpRequest();
+            cleanFormMessages(form);
         })
     }
 
@@ -43,10 +44,10 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
     }
 
     self.executeWhenUpdateButtonClicked = function(form) {
-        form.$submitted = false;
-        form.name$touched = false;
         self.updateSupplier(form);
-        self.executeWhenCancelButtonClicked();
+        cleanFormMessages(form);
+        self.cleanData();
+        self.isSupplierToBeUpdated = false;
     }
 
     function disableSupplierToBeUpdated() {
@@ -67,16 +68,30 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
     }
 
     self.executeWhenCancelButtonClicked = function (form) {
-        form.$submitted = false;
+        cleanFormMessages(form);
         self.cleanData();
-        disableSupplierToBeUpdated();
+        self.isSupplierToBeUpdated = false;
+    }
+    function cleanFormMessages(form){
+        form.$submitted = false;
+        form.$setUntouched();
     }
 
 
     $scope.init = function () {
-        disableSupplierToBeUpdated();
+        self.isSupplierToBeUpdated = false;
         self.tempSupplier = {};
         self.getAllSuppliers();
     };
     $scope.init();
+
+    
+    angular.element(document).ready(function () {
+        var cleave = new Cleave('.cnpj', {
+            delimiters: ['.', '.', '/', '-'],
+            blocks: [2, 3, 3, 4, 2],
+            numericOnly: true
+        });
+    });
+    
 }]);
