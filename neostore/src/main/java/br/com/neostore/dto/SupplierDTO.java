@@ -1,8 +1,11 @@
 package br.com.neostore.dto;
 
+import jakarta.validation.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+
+import java.util.Set;
 
 public class SupplierDTO {
     @NotBlank(message = "O nome não pode estar em branco")
@@ -15,6 +18,13 @@ public class SupplierDTO {
     private String cnpj;
 
     public SupplierDTO(){
+    }
+    public SupplierDTO(String name,String email,String description,String cnpj) {
+        this.name = name;
+        this.email = email;
+        this.description = description;
+        this.cnpj = cnpj;
+        validate();
     }
     public String getName() {
         return name;
@@ -41,4 +51,13 @@ public class SupplierDTO {
         this.cnpj = cnpj;
     }
 
+    private void validate() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<SupplierDTO>> violations = validator.validate(this);
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException("Validation failed", violations);
+        }
+    }
 }

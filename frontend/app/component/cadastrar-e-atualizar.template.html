@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="text-center py-2"> {{ mainCtrl.isSupplierToBeUpdated ?  'Atualizar Fornecedor' : 'Cadastrar Fornecedor' }}</h2>
+    <h3 class="text-center py-1"> {{ mainCtrl.isSupplierToBeUpdated ?  'Atualizar Fornecedor' : 'Cadastrar Fornecedor' }}</h3>
 
     <form name="formulario">
         <div class="inputs row gap-1">
@@ -8,7 +8,7 @@
                 <div class="col-10">
                     <input class="form-control" type="text" name="name" ng-model="mainCtrl.tempSupplier.name"
                         ng-required="true" ng-pattern="/.+/">
-                    <div ng-messages="formulario.name.$error" ng-if="formulario.name.$touched || formulario.$submitted">
+                    <div class="error-messages" ng-messages="formulario.name.$error" ng-if="formulario.name.$touched || formulario.$submitted">
                         <div class="error-message" ng-message="required">Campo obrigatório!</div>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                     <input class="form-control" type="email" name="email" placeholder="gandalf@email.com"
                         ng-model="mainCtrl.tempSupplier.email" ng-required="true"
                         ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/">
-                    <div ng-messages="formulario.email.$error"
+                    <div class="error-messages" ng-messages="formulario.email.$error"
                         ng-if="formulario.email.$touched || formulario.$submitted">
                         <div class="error-message" ng-message="pattern || required">Campo obrigatório, insira um e-mail válido. (exemplo@email.com)</div>
                     </div>
@@ -36,7 +36,7 @@
                 <div class="col-10">
                     <input class="form-control cnpj" type="text" name="cnpj" ng-model="mainCtrl.tempSupplier.cnpj"
                         ng-required="true">
-                    <div ng-messages="formulario.cnpj.$error" ng-if="formulario.cnpj.$touched || formulario.$submitted">
+                    <div class="error-messages" ng-messages="formulario.cnpj.$error" ng-if="formulario.cnpj.$touched || formulario.$submitted">
                         <div class="error-message" ng-message="pattern || required">Campo obrigatório, insira um cnpj válido. </div>
                     </div>
                 </div>

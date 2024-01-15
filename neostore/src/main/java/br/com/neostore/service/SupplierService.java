@@ -5,9 +5,12 @@ import br.com.neostore.dto.SupplierDTO;
 import br.com.neostore.model.Supplier;
 import br.com.neostore.repository.SupplierRepository;
 import br.com.neostore.util.JPAUtil;
+import jakarta.json.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierService implements ISupplierService{
@@ -25,7 +28,24 @@ public class SupplierService implements ISupplierService{
         Supplier newSupplier = convertDTOtoEntity(supplierDTO);
         supplierRepository.add(newSupplier);
     }
+    @Override
+    public List<JsonValue> createSuppliersInBatch(JsonArray supplierJsonArray) {
 
+        List<JsonValue> notAddedSuppliers = new ArrayList<>();
+        List<Supplier> suppliersToBeAdded = new ArrayList<>();
+
+        for(JsonValue jsonValue : supplierJsonArray){
+            try {
+                Supplier supplier = convertJsonValueToEntity(jsonValue);
+                suppliersToBeAdded.add(supplier);
+            }catch (Exception e){
+                notAddedSuppliers.add(jsonValue);
+                e.printStackTrace();
+            }
+        }
+        supplierRepository.addSuppliers(suppliersToBeAdded);
+        return notAddedSuppliers;
+    }
     @Override
     public List<Supplier> getAllSuppliers() {
         return supplierRepository.findAll();
@@ -61,7 +81,6 @@ public class SupplierService implements ISupplierService{
 
         supplierRepository.delete(existingSupplier);
     }
-
     private List<Supplier> getSuppliers(int itemsPerPage, int page) {
 
         return supplierRepository.findPaginatedSuppliers(itemsPerPage, page);
@@ -79,5 +98,51 @@ public class SupplierService implements ISupplierService{
         supplier.setCnpj(supplierDTO.getCnpj());
 
         return supplier;
+    }
+    private Supplier convertJsonValueToEntity(JsonValue jsonValue) {
+
+        JsonObject jsonObject = (JsonObject) jsonValue;
+        String name = jsonObject.getString("name");
+        String email = jsonObject.getString("email");
+        String description = jsonObject.containsKey("description")? jsonObject.getString("description"):"";
+        String cnpj = jsonObject.getString("cnpj");
+
+        SupplierDTO supplierDTO = new SupplierDTO(name, email, description, cnpj);
+
+        return convertDTOtoEntity(supplierDTO);
+    }
+    private String parseToJson(PaginatedResponseDTO<Supplier> paginatedSuppliers){
+
+        JsonArray jsonSuppliers = convertFornecedoresToJsonArray(paginatedSuppliers);
+
+        // Criando um JsonObject para a resposta final
+        JsonObject jsonResponse = Json.createObjectBuilder()
+                .add("suppliers", jsonSuppliers)
+                .add("totalItems", paginatedSuppliers.getTotalItems())
+                .build();
+
+        // Convertendo o JsonObject para uma string JSON
+        StringWriter stringWriter = new StringWriter();
+        try (JsonWriter jsonWriter = Json.createWriter(stringWriter)) {
+            jsonWriter.writeObject(jsonResponse);
+        }
+
+        return stringWriter.toString();
+    }
+    private JsonArray convertFornecedoresToJsonArray(PaginatedResponseDTO<Supplier> paginatedSuppliers) {
+        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        List<Supplier> fornecedores = paginatedSuppliers.getData();
+
+        for (Supplier supplier : fornecedores) {
+            JsonObject jsonFornecedor = Json.createObjectBuilder()
+                    .add("id", supplier.getId())
+                    .add("name", supplier.getName())
+                    .add("email", supplier.getEmail())
+                    .add("description", supplier.getDescription() != null ? supplier.getDescription() : "")
+                    .add("cnpj", supplier.getCnpj())
+                    .build();
+            jsonArrayBuilder.add(jsonFornecedor);
+        }
+        return jsonArrayBuilder.build();
     }
 }

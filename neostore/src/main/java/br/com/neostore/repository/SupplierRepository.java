@@ -24,6 +24,17 @@ public class SupplierRepository implements ISupplierRepository{
     }
 
     @Override
+    public void addSuppliers(List<Supplier> suppliers) {
+        if (!suppliers.isEmpty()) {
+            openConnection();
+            for (Supplier supplier : suppliers) {
+                this.entityManager.persist(supplier);
+            }
+            closeConnection();
+        }
+    }
+
+    @Override
     public List<Supplier> findAll() {
         String JPQL = "SELECT s FROM Supplier s";
         return entityManager.createQuery(JPQL,Supplier.class).getResultList();

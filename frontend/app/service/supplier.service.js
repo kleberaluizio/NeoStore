@@ -9,6 +9,11 @@ app.service('supplierService',['$http',function($http){
         return $http.get(URL)
     };
 
+    this.getPageSuppliers = function(itemsPerPage, page){
+        let PAGE_URL = URL + `paginated?itemsPerPage=${itemsPerPage}&page=${page}`;
+        return $http.get(PAGE_URL)
+    };
+
     this.updateSupplier = function(supplier, id){
         console.log('supplier',supplier);
         return $http.put(URL+id, supplier)

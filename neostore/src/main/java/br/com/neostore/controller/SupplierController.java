@@ -4,6 +4,8 @@ import br.com.neostore.dto.PaginatedResponseDTO;
 import br.com.neostore.dto.SupplierDTO;
 import br.com.neostore.model.Supplier;
 import br.com.neostore.service.SupplierService;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonValue;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -33,6 +35,22 @@ public class SupplierController {
             String errorMessage = "Error: " + e.getMessage();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
         }
+        return Response.status(Response.Status.CREATED).build();
+    }
+    @POST
+    @Path("/batch")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createSuppliers(JsonArray supplierJsonArray){
+
+        List<JsonValue> notAddedSuppliers = supplierService.createSuppliersInBatch(supplierJsonArray);
+
+        if (!notAddedSuppliers.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(notAddedSuppliers)
+                    .build();
+        }
+
         return Response.status(Response.Status.CREATED).build();
     }
 

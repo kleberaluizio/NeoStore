@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ISupplierRepository {
 
     void add(Supplier supplier);
+    void addSuppliers(List<Supplier> suppliersToBeAdded);
     List<Supplier> findAll();
     Supplier findById(int id);
     Supplier findByCnpj(String cnpj);
