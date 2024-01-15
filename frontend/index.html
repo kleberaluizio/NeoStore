@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="neostore">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- AngularJS v1.8.2-->
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-messages.min.js"></script>
+
+    <!--Styles-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!--Enable custom alert using sweetalert lib-->
+    <script src="lib/sweetalert.min.js"></script>
+    <!--Enable custom mask in input using cleave lib-->
+    <script src="lib/cleave.min.js"></script>
+    <!--Module-->
+    <script src="app/app.js"></script>
+    <!--Service-->
+    <script src="app/service/supplier.service.js"></script>
+    <!--Controller-->
+    <script src="app/controller/main.controller.js"></script>
+
+</head>
+
+<body ng-controller="MainController as mainCtrl">
+
+    <header ng-include="'app/component/header.template.html'"></header>
+
+    <suppliers ng-include="'app/component/paginated-suppliers.template.html'"></suppliers>
+
+    <cadastro-e-atualizacao ng-include="'app/component/cadastrar-e-atualizar.template.html'"></cadastro-e-atualizacao>
+
+
+    <footer ng-include="'app/component/footer.template.html'"></footer>
+
+    
+</body>
+
+</html>

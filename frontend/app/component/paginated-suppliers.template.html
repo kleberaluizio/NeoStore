@@ -1,0 +1,33 @@
+<div class="text-center">
+    <h2 class="p-1">Fornecedores</h2>
+
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome do Fornecedor</th>
+                    <th>E-mail</th>
+                    <th>Descrição</th>
+                    <th class="col-2">CNPJ</th>
+                    <th class="text-center"> Acões</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="supplier in mainCtrl.suppliers | orderBy: 'name'">
+                    <td>{{ supplier.name }}</td>
+                    <td>{{ supplier.email }}</td>
+                    <td>{{ supplier.description }}</td>
+                    <td>{{ supplier.cnpj }}</td>
+                    <td class="text-center">
+
+                        <button type="button" ng-click="mainCtrl.prepareToUpdate(supplier);"
+                                class="btn btn-warning btn-sm">Editar</button>
+                        <button type="button" value="Delete" ng-click="mainCtrl.deleteSupplier(supplier.id)"
+                            class="btn btn-danger btn-sm">Excluir</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

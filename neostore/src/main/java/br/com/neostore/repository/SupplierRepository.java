@@ -47,7 +47,6 @@ public class SupplierRepository implements ISupplierRepository{
             return entityManager.createQuery(JPQL, Supplier.class)
                     .setParameter("cnpj", cnpj)
                     .getSingleResult();
-
         }catch (Exception e){
             return null;
         }

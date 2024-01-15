@@ -33,10 +33,7 @@ public class SupplierService implements ISupplierService{
 
     @Override
     public PaginatedResponseDTO<Supplier> getPaginatedSuppliers(int itemsPerPage, int page) {
-
-        List<Supplier> suppliers = getSuppliers(itemsPerPage, page);
-        long totalSupplier = getTotalSuppliers();
-        return new PaginatedResponseDTO<>(suppliers,totalSupplier);
+        return new PaginatedResponseDTO<>(getSuppliers(itemsPerPage, page),getTotalSuppliers());
     }
 
     @Override

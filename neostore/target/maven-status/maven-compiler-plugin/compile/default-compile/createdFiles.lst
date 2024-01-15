@@ -1,5 +1,6 @@
 br/com/neostore/repository/SupplierRepository.class
 br/com/neostore/service/ISupplierService.class
+br/com/neostore/controller/CorsFilter.class
 br/com/neostore/repository/ISupplierRepository.class
 br/com/neostore/controller/SupplierController.class
 br/com/neostore/model/Supplier.class
