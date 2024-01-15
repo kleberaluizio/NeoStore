@@ -1,6 +1,7 @@
 app.controller('MainController', ['$scope','supplierService',function ($scope,supplierService) {
 
     var self = this;
+    self.isRegisterEnable = false;
 
 
     // 
@@ -83,6 +84,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
     }
 
     self.prepareToUpdate = function (supplier) {
+        self.isRegisterEnable = true;
         self.tempSupplier = angular.copy(supplier);
         self.isSupplierToBeUpdated = true;
     }
@@ -102,6 +104,18 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         self.isSupplierToBeUpdated = false;
     }
 
+
+    self.executeWhenCancelButtonClicked = function (form) {
+        cleanFormMessages(form);
+        self.cleanData();
+        self.isSupplierToBeUpdated = false;
+        self.isRegisterEnable = false;
+    }
+
+    self.executeWhenCadastrarButtonClicked = function () {
+        self.isRegisterEnable = true;
+    }
+
     function disableSupplierToBeUpdated() {
         self.isSupplierToBeUpdated = false;
     }
@@ -119,11 +133,6 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         self.getAllSuppliers();
     }
 
-    self.executeWhenCancelButtonClicked = function (form) {
-        cleanFormMessages(form);
-        self.cleanData();
-        self.isSupplierToBeUpdated = false;
-    }
     function cleanFormMessages(form){
         form.$submitted = false;
         form.$setUntouched();

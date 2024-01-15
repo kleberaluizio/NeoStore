@@ -4,6 +4,10 @@
     background-color:#111111 !important;
 }
 
+.btn_body{
+    text-align: center;
+}
+/*
 body {
     margin: 0;
     padding: 0;
@@ -12,6 +16,7 @@ body {
     flex-direction: column;
     margin-bottom: 60px;
 }
+*/
 
 .footer_bar {
     position: fixed;

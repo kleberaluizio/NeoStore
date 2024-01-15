@@ -31,7 +31,11 @@
 
     <suppliers ng-include="'app/component/paginated-suppliers.template.html'"></suppliers>
 
-    <cadastro-e-atualizacao ng-include="'app/component/cadastrar-e-atualizar.template.html'"></cadastro-e-atualizacao>
+    <div class="btn_body">
+        <button ng-if="!mainCtrl.isRegisterEnable" type="reset" class="btn btn-primary" id="button" ng-click="mainCtrl.executeWhenCadastrarButtonClicked()">Cadastrar novo fornecedor</button>
+    </div>
+
+    <cadastro-e-atualizacao ng-if="mainCtrl.isRegisterEnable"  ng-include="'app/component/cadastrar-e-atualizar.template.html'"></cadastro-e-atualizacao>
 
     <footer ng-include="'app/component/footer.template.html'"></footer>
 
