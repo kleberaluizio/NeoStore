@@ -1,7 +1,7 @@
-app.controller('MainController', ['$scope','supplierService',function ($scope,supplierService) {
+app.controller('MainController', ['$scope', '$timeout', 'supplierService', function ($scope, $timeout, supplierService) {
 
     var self = this;
-    self.isRegisterEnable = false;
+    self.displayForm = false;
 
 
     // 
@@ -17,7 +17,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
 
     /* PAGINACAO */
     // Exemplo de lógica de controle de paginação no controlador
-    
+
     self.pages = [];
     self.currentPage = 1;
     self.itemsPerPage = 5;
@@ -39,7 +39,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
             .then(function (response) {
                 self.suppliers = response.data.data;
                 self.totalItems = response.data.totalItems;
-                self.totalPages = Math.ceil(self.totalItems / self.itemsPerPage); 
+                self.totalPages = Math.ceil(self.totalItems / self.itemsPerPage);
             }, function () {
                 swal("Não foi possível coletar os dados dos fornecedores, verifique sua conexão!", "", "warning");
             })
@@ -72,7 +72,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         }
     });
 
-        /* PAGINACAO */
+    /* PAGINACAO */
 
     self.updateSupplier = function (form) {
         form.$submitted = true;
@@ -84,7 +84,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
     }
 
     self.prepareToUpdate = function (supplier) {
-        self.isRegisterEnable = true;
+        self.displayForm = true;
         self.tempSupplier = angular.copy(supplier);
         self.isSupplierToBeUpdated = true;
     }
@@ -97,7 +97,7 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         })
     }
 
-    self.executeWhenUpdateButtonClicked = function(form) {
+    self.executeWhenUpdateButtonClicked = function (form) {
         self.updateSupplier(form);
         cleanFormMessages(form);
         self.cleanData();
@@ -109,11 +109,11 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         cleanFormMessages(form);
         self.cleanData();
         self.isSupplierToBeUpdated = false;
-        self.isRegisterEnable = false;
+        self.displayForm = false;
     }
 
     self.executeWhenCadastrarButtonClicked = function () {
-        self.isRegisterEnable = true;
+        self.displayForm = true;
     }
 
     function disableSupplierToBeUpdated() {
@@ -133,26 +133,34 @@ app.controller('MainController', ['$scope','supplierService',function ($scope,su
         self.getAllSuppliers();
     }
 
-    function cleanFormMessages(form){
+    function cleanFormMessages(form) {
         form.$submitted = false;
         form.$setUntouched();
     }
 
+    $scope.$watch('mainCtrl.displayForm', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            $timeout(function() {
+                enableCleave();
+            });        
+        }
+    });
 
     $scope.init = function () {
         self.isSupplierToBeUpdated = false;
         self.tempSupplier = {};
         self.getAllSuppliers();
     };
-    $scope.init();
+    $scope.init();    
 
-    
-    angular.element(document).ready(function () {
-        var cleave = new Cleave('.cnpj', {
-            delimiters: ['.', '.', '/', '-'],
-            blocks: [2, 3, 3, 4, 2],
-            numericOnly: true
+    function enableCleave() {
+        angular.element(document).ready(function () {
+            let cleave = new Cleave('.cnpj', {
+                delimiters: ['.', '.', '/', '-'],
+                blocks: [2, 3, 3, 4, 2],
+                numericOnly: true
+            });
         });
-    });
-    
+    }
+ 
 }]);

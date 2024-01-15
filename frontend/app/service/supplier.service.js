@@ -15,7 +15,6 @@ app.service('supplierService',['$http',function($http){
     };
 
     this.updateSupplier = function(supplier, id){
-        console.log('supplier',supplier);
         return $http.put(URL+id, supplier)
     };
 
