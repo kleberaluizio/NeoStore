@@ -37,6 +37,12 @@ public class SupplierService implements ISupplierService{
         for(JsonValue jsonValue : supplierJsonArray){
             try {
                 Supplier supplier = convertJsonValueToEntity(jsonValue);
+
+                Supplier existingSupplierByCnpj = supplierRepository.findByCnpj(supplier.getCnpj());
+                if (existingSupplierByCnpj != null) {
+                    throw new EntityExistsException("Não foi possivel realizar a atualização. CNPJ fornecido já está registrado em nosso sistema");
+                }
+
                 suppliersToBeAdded.add(supplier);
             }catch (Exception e){
                 notAddedSuppliers.add(jsonValue);

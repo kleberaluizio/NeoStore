@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "42e0300c-c663-439f-a9ff-2bc6b5bbd7ba",
+		"name": "Neostore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27907061"
+	},
+	"item": [
+		{
+			"name": "Add Supplier",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Supermercado da vida\", \n    \"email\": \"sv@gmail.com\", \n    \"description\": \"\", \n    \"cnpj\": \"41.010.201/2120-00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/supplier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/supplier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Supplier",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/supplier/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Supplier",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Supermercado da vida\", \n    \"email\": \"super@gmail.com\", \n    \"description\": \"\", \n    \"cnpj\": \"41.010.211/2120-00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/supplier/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Paginated Suppliers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/supplier/paginated?itemsPerPage=5&page=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier",
+						"paginated"
+					],
+					"query": [
+						{
+							"key": "itemsPerPage",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Suppliers in Batch",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"name\": \"Fornecedor A\",\n    \"email\": \"fornecedorA@email.com\",\n    \"description\": \"Comentário do Fornecedor A\",\n    \"cnpj\": \"12.345.678/0001-00\"\n  },\n  {\n    \"name\": \"Fornecedor B\",\n    \"email\": \"fornecedorB@email.com\",\n    \"description\": \"Comentário do Fornecedor B\",\n    \"cnpj\": \"98.765.432/0001-21\"\n  },\n  {\n    \"name\": \"Fornecedor C\",\n    \"email\": \"fornecedorC@email.com\",\n    \"description\": \"Comentário do Fornecedor C\",\n    \"cnpj\": \"34.567.890/0001-45\"\n  }\n]\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/supplier/batch",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"supplier",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
