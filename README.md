@@ -23,3 +23,40 @@ Interface para apresentar os dados de fornecedores, requisitando os mesmo a part
 * Bibliotecas:
 	* Sweetalert.js para exibir alertas
 	* Cleave.js para aplicar mascára ao campo de cnpj.
+	
+## Endpoints
+
+### Criar Fornecedor:
+
+* POST /supplier
+	* Cria um novo fornecedor.
+	* Retorna status 201 (Created) em sucesso, 400 (Bad Request) ou 500 (Internal Server Error) em falha.
+
+### Criar Fornecedores em Lote:
+
+* POST /supplier/batch
+	* Cria vários fornecedores em lote.
+	* Retorna status 201 (Created) se todos forem criados, 400 (Bad Request) com detalhes em falha.
+
+### Obter Todos os Fornecedores:
+
+* GET /supplier
+	* Retorna todos os fornecedores (status 200 - OK).
+
+### Obter Fornecedores Paginados:
+
+* GET /supplier/paginated
+	* Parâmetros: itemsPerPage, page.
+	* Retorna uma resposta paginada de fornecedores (status 200 - OK).
+
+### Atualizar Fornecedor:
+
+* PUT /supplier/{id}
+	* Atualiza um fornecedor com ID específico.
+	* Retorna status 200 (OK) se bem-sucedido, 404 (Not Found) se não encontrado, 500 (Internal Server Error) em falha.
+
+### Excluir Fornecedor:
+
+* DELETE /supplier/{id}
+	* Exclui um fornecedor com ID específico.
+	* Retorna status 200 (OK) se bem-sucedido, 404 (Not Found) se não encontrado, 500 (Internal Server Error) em falha.

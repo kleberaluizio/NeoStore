@@ -16,12 +16,21 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+/**
+ * Controlador para operações relacionadas aos fornecedores.
+ * Fornece endpoints para leitura, criação, atualização de fornecedores.
+ */
 @Path("supplier")
 public class SupplierController {
 
     private SupplierService supplierService = new SupplierService();
 
-    //CREATE
+    /**
+     * Cria um novo fornecedor.
+     *
+     * @param supplierDTO As informações do fornecedor a ser criado.
+     * @return Resposta HTTP indicando o sucesso ou falha da operação.
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -37,6 +46,13 @@ public class SupplierController {
         }
         return Response.status(Response.Status.CREATED).build();
     }
+
+    /**
+     * Cria vários fornecedores em lote.
+     *
+     * @param supplierJsonArray Lista de objetos JSON representando fornecedores.
+     * @return Resposta HTTP indicando o sucesso ou falha da operação.
+     */
     @POST
     @Path("/batch")
     @Produces(MediaType.APPLICATION_JSON)
@@ -52,7 +68,11 @@ public class SupplierController {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    //READ
+    /**
+     * Obtém todos os fornecedores.
+     *
+     * @return Resposta HTTP contendo a lista de fornecedores.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll(){
@@ -60,6 +80,13 @@ public class SupplierController {
         return Response.status(Response.Status.OK).entity(fornecedores).build();
     }
 
+    /**
+     * Obtém uma lista paginada de fornecedores.
+     *
+     * @param itemsPerPage Número de itens por página.
+     * @param page Número da página desejada.
+     * @return Resposta HTTP contendo a lista paginada de fornecedores e total de fornecedores em nosso banco de dados.
+     */
     @GET
     @Path("/paginated")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,7 +97,14 @@ public class SupplierController {
         PaginatedResponseDTO<Supplier> paginatedSuppliers = supplierService.getPaginatedSuppliers(itemsPerPage, page);
         return Response.ok(paginatedSuppliers).build();
     }
-    //UPDATE
+
+    /**
+     * Endpoint para atualizar um fornecedor existente.
+     *
+     * @param id O ID do fornecedor a ser atualizado.
+     * @param supplierDTO O SupplierDTO contendo as informações atualizadas.
+     * @return Resposta com o status HTTP indicando sucesso ou falha.
+     */
     @PUT
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -86,7 +120,12 @@ public class SupplierController {
         return Response.status(Response.Status.OK).build();
     }
 
-    //DELETE
+    /**
+     * Endpoint para excluir um fornecedor por ID.
+     *
+     * @param id O ID do fornecedor a ser excluído.
+     * @return Resposta com o status HTTP indicando sucesso ou falha.
+     */
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
