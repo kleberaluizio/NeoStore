@@ -23,7 +23,7 @@ public class SupplierRepository implements ISupplierRepository{
             openConnection();
             entityManager.persist(supplier);
         }catch (Exception e){
-            throw new PersistenceException(" ");
+            throw new PersistenceException("Não foi possivel adicionar o fornecedor, problemas de conexão com DB");
         }finally {
             closeConnection();
         }
@@ -32,16 +32,11 @@ public class SupplierRepository implements ISupplierRepository{
     @Override
     public void addSuppliers(List<Supplier> suppliers) {
         if (!suppliers.isEmpty()) {
-            try {
-                openConnection();
-                for (Supplier supplier : suppliers) {
-                    this.entityManager.persist(supplier);
-                }
-            }catch (Exception e){
-
-            }finally {
-                closeConnection();
+            openConnection();
+            for (Supplier supplier : suppliers) {
+                this.entityManager.persist(supplier);
             }
+            closeConnection();
         }
     }
 

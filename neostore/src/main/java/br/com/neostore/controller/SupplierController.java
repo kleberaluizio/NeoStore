@@ -44,13 +44,11 @@ public class SupplierController {
     public Response createSuppliers(JsonArray supplierJsonArray){
 
         List<JsonValue> notAddedSuppliers = supplierService.createSuppliersInBatch(supplierJsonArray);
-
         if (!notAddedSuppliers.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(notAddedSuppliers)
                     .build();
         }
-
         return Response.status(Response.Status.CREATED).build();
     }
 

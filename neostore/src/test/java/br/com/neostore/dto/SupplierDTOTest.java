@@ -1,8 +1,10 @@
 package br.com.neostore.dto;
 
 import jakarta.validation.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 
 import java.util.Set;
 
@@ -18,46 +20,76 @@ class SupplierDTOTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
+    @Test
+    void shouldNotFailValidationIfCnpjIsValid() {
+        // GIVEN
+        String validCnpj = "12.345.000/0001-01";
 
+        // WHEN & THEN
+        assertDoesNotThrow(() -> {
+            new SupplierDTO("Supplier", "email@gmail.com", "Comentário", validCnpj);
+        });
+    }
     @Test
     void shouldFailValidationIfCnpjIsInvalid() {
 
-        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> new SupplierDTO("Supplier", "email@gmail.com", "Comentário", "12.345/679-01"));
+        // GIVEN
+        String invalidCnpj = "12.345/679-01";
 
+        // WHEN & THEN
+        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> {
+        // WHEN
+            new SupplierDTO("Supplier", "email@gmail.com", "Comentário", "12.345/679-01");
+        });
 
-        // Agora você pode acessar a exceção diretamente
+        // THEN
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
-
-        // Aqui, você pode realizar verificações específicas sobre as mensagens associadas a cada violação
-        assertEquals(1, violations.size()); // Certifica-se de que há uma única violação
+        assertEquals(1, violations.size());  // Verifica se há uma única violação
         ConstraintViolation<?> violation = violations.iterator().next();
-        assertEquals( "Por favor, digite um cnpj válido", violation.getMessage());
+        String message = "Por favor, digite um cnpj válido";
+        assertEquals(message, violation.getMessage()); // Verifica se a mensagem da violação é a esperada
     }
     @Test
     void shouldFailValidationIfCnpjIsBlank() {
+        // GIVEN
+        String invalidCnpj = "";
 
-        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> new SupplierDTO("Supplier", "email@gmail.com", "Comentário", ""));
+        // WHEN & THEN
+        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> {
+        // WHEN
+            new SupplierDTO("Supplier", "email@gmail.com", "Comentário", invalidCnpj);
+        });
 
-        // Agora você pode acessar a exceção diretamente
+        // THEN
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
-
-        // Aqui, você pode realizar verificações específicas sobre as mensagens associadas a cada violação
         assertEquals(2, violations.size()); // Certifica-se de que há uma única violação
     }
 
     @Test
     void shouldFailValidationIfEmailIsInvalid() {
 
-        jakarta.validation.ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> new SupplierDTO("Supplier", "invalidemail", "Comentário", "12.001.345/6789-01"));
+        // GIVEN
+        String invalidEmail = "invalidemail";
+        // WHEN & THEN
+        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> {
+            // WHEN
+            new SupplierDTO("Supplier", invalidEmail, "Comentário", "12.001.345/6789-01");
+        });
 
 
-        // Agora você pode acessar a exceção diretamente
+        // THEN
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
-
-        // Aqui, você pode realizar verificações específicas sobre as mensagens associadas a cada violação
-        assertEquals(1, violations.size()); // Certifica-se de que há uma única violação
+        assertEquals(1, violations.size()); // Verifica se há uma única violação
         ConstraintViolation<?> violation = violations.iterator().next();
-        assertEquals("Por favor, digite um e-mail válido", violation.getMessage());
-
+        assertEquals("Por favor, digite um e-mail válido", violation.getMessage()); // Verifica se a mensagem da violação é a esperada
+    }
+    @Test
+    void shouldNotFailValidationIfEmailIsValid() {
+        // GIVEN
+        String validEmail = "email@gmail.com";
+        // WHEN & THEN
+        assertDoesNotThrow(() -> {
+            new SupplierDTO("Supplier", validEmail, "Comentário", "12.001.345/6789-01");
+        });
     }
 }
