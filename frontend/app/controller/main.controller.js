@@ -2,6 +2,8 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
 
     var self = this;
     self.displayForm = false;
+    self.isSupplierToBeUpdated = false;
+    self.tempSupplier = {};
 
 
     // CRUD OPERATIONS
@@ -84,22 +86,6 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         form.$setUntouched();
     }
 
-
-
-    function changepdateStatus() {
-        self.isSupplierToBeUpdated = !self.isSupplierToBeUpdated ;
-    }
-
-    self.enableRegisterTemplate = function () {
-        self.tempSupplier = {};
-    }
-
-
-    function executeAfterHttpRequest() {
-        cleanData();
-        self.getAllSuppliers();
-    }
-
     function exceptionHandler(error) {
         let match = /p0=([^&]+)/.exec(error.message);
 
@@ -119,27 +105,23 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         });
     }
 
-    /* PAGINACAO */
-    // Exemplo de lógica de controle de paginação no controlador
+    function executeAfterHttpRequest() {
+        cleanData();
+        self.getAllSuppliers();
+    }
 
+    // Pagination's parameters and functions
     self.pages = [];
     self.currentPage = 1;
     self.itemsPerPage = 5;
     self.totalItems = 0;
     self.totalPages = 0;
 
-
-
-    // Função para carregar uma página específica
     self.loadPage = function (page) {
-        // Atualizar a página atual
         self.currentPage = page;
-
-        // Chamar a função existente para obter os fornecedores da página atual
         self.getAllSuppliers();
     };
 
-    // Função para atualizar a lista de páginas
     function updatePages() {
         self.pages = [];
         for (let i = 1; i <= self.totalPages; i++) {
@@ -148,18 +130,12 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
     }
     $scope.$watch('mainCtrl.suppliers', function (newValue) {
         if (newValue) {
-            // Calcular o número total de páginas com base no total de itens e itens por página
             self.totalPages = Math.ceil(self.totalItems / self.itemsPerPage);
-
-            // Atualizar a lista de páginas
             updatePages();
         }
     });
 
-    /* PAGINACAO */
-
-
-
+    // CNPJ Mask Function
     $scope.$watch('mainCtrl.displayForm', function (newValue, oldValue) {
         if (newValue !== oldValue) {
             $timeout(function () {
@@ -169,10 +145,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
     });
 
     // Initialization
-
     function init() {
-        self.isSupplierToBeUpdated = false;
-        self.tempSupplier = {};
         self.getAllSuppliers();
     }
     init();
