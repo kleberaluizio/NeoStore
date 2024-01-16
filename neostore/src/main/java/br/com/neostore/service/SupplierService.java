@@ -80,7 +80,7 @@ public class SupplierService implements ISupplierService{
         }
         Supplier existingSupplierByCnpj = supplierRepository.findByCnpj(supplierDTO.getCnpj());
 
-        if (supplierRepository.findByCnpj(supplierDTO.getCnpj()) != null) {
+        if (existingSupplierByCnpj != null) {
             throw new EntityExistsException("Não foi possivel realizar a atualização. CNPJ fornecido já está registrado em nosso sistema");
         }
     }

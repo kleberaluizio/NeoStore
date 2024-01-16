@@ -27,13 +27,4 @@ app.service('supplierService',['$http',function($http){
         return $http.delete(URL + id_supplier)
     };
     
-    function returnSupplierObject(supplier) {
-        return {   
-            name: supplier.name,
-            email: supplier.email,
-            description: supplier?.description,
-            cnpj: supplier.cnpj
-        };
-    }
-    
 }]);

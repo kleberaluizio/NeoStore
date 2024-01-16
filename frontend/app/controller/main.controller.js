@@ -4,7 +4,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
     self.displayForm = false;
 
 
-    // 
+    // CRUD OPERATIONS
     self.createSupplier = function (form) {
         form.$submitted = true;
         if (!form.$valid) { return; }
@@ -18,26 +18,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
             });
     }
 
-    /* PAGINACAO */
-    // Exemplo de lógica de controle de paginação no controlador
-
-    self.pages = [];
-    self.currentPage = 1;
-    self.itemsPerPage = 5;
-    self.totalItems = 0;
-    self.totalPages = 0;
-
     self.getAllSuppliers = function () {
-        self.getPageSuppliers();
-        /*
-        supplierService.getAllSuppliers()
-            .then(function (response) {self.suppliers = response.data;}, function () {
-            swal("Não foi possível coletar os dados dos fornecedores, verifique sua conexão!", "", "warning");
-        })
-        */
-    };
-
-    self.getPageSuppliers = function () {
         supplierService.getPageSuppliers(self.itemsPerPage, self.currentPage)
             .then(function (response) {
                 self.suppliers = response.data.data;
@@ -48,6 +29,106 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
             })
     };
 
+    self.updateSupplier = function () {
+        supplierService.updateSupplier(self.tempSupplier, self.tempSupplier.id).then(function (response) {
+            swal("Fornecedor atualizado com sucesso!", "", "success");
+            executeAfterHttpRequest();
+        }).catch(function errorCallback(error) {
+            exceptionHandler(error);
+        });
+    }
+
+    self.deleteSupplier = function (id_fornecedor) {
+        supplierService.deleteSupplier(id_fornecedor).then(function (response) {
+            swal("Exclusão realizada com sucesso!", "", "success");
+            executeAfterHttpRequest();
+        })
+    }
+
+    // User Interface Interaction
+    self.openUpdateForm = function (supplier) {
+        self.openForm()
+        self.tempSupplier = angular.copy(supplier);
+        self.isSupplierToBeUpdated = true;
+    }
+
+    self.submitUpdateForm = function (form) {
+        form.$submitted = true;
+        if (!form.$valid) { return; }
+        self.updateSupplier();
+        cleanFormMessages(form);
+        cleanData();
+        self.isSupplierToBeUpdated = false;
+    }
+        
+    self.openForm = function () {
+        self.displayForm = true;
+    }
+
+    self.closeForm = function (form) {
+        cleanFormMessages(form);
+        cleanData();
+        self.isSupplierToBeUpdated = false;
+        self.displayForm = false;
+    }
+
+   
+
+    // Utility Functions
+    function cleanData() {
+        self.tempSupplier = {};
+    }
+
+    function cleanFormMessages(form) {
+        form.$submitted = false;
+        form.$setUntouched();
+    }
+
+
+
+    function changepdateStatus() {
+        self.isSupplierToBeUpdated = !self.isSupplierToBeUpdated ;
+    }
+
+    self.enableRegisterTemplate = function () {
+        self.tempSupplier = {};
+    }
+
+
+    function executeAfterHttpRequest() {
+        cleanData();
+        self.getAllSuppliers();
+    }
+
+    function exceptionHandler(error) {
+        let match = /p0=([^&]+)/.exec(error.message);
+
+        if (match && match[1]) {
+            let mensagem = decodeURIComponent(match[1]);
+            swal(mensagem, "", "warning");
+        }
+    }
+
+    function enableCleave() {
+        angular.element(document).ready(function () {
+            let cleave = new Cleave('.cnpj', {
+                delimiters: ['.', '.', '/', '-'],
+                blocks: [2, 3, 3, 4, 2],
+                numericOnly: true
+            });
+        });
+    }
+
+    /* PAGINACAO */
+    // Exemplo de lógica de controle de paginação no controlador
+
+    self.pages = [];
+    self.currentPage = 1;
+    self.itemsPerPage = 5;
+    self.totalItems = 0;
+    self.totalPages = 0;
+
+
 
     // Função para carregar uma página específica
     self.loadPage = function (page) {
@@ -55,7 +136,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         self.currentPage = page;
 
         // Chamar a função existente para obter os fornecedores da página atual
-        self.getPageSuppliers(self.itemsPerPage, self.currentPage);
+        self.getAllSuppliers();
     };
 
     // Função para atualizar a lista de páginas
@@ -77,79 +158,7 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
 
     /* PAGINACAO */
 
-    self.updateSupplier = function () {
-        supplierService.updateSupplier(self.tempSupplier, self.tempSupplier.id).then(function (response) {
-            swal("Fornecedor atualizado com sucesso!", "", "success");
-            executeAfterHttpRequest();
-        }).catch(function errorCallback(error) {
-            exceptionHandler(error);
-        });
-    }
 
-    self.prepareToUpdate = function (supplier) {
-        self.displayForm = true;
-        self.tempSupplier = angular.copy(supplier);
-        self.isSupplierToBeUpdated = true;
-    }
-
-
-    self.deleteSupplier = function (id_fornecedor) {
-        supplierService.deleteSupplier(id_fornecedor).then(function (response) {
-            swal("Exclusão realizada com sucesso!", "", "success");
-            executeAfterHttpRequest();
-        })
-    }
-
-    self.executeWhenUpdateButtonClicked = function (form) {
-        form.$submitted = true;
-        if (!form.$valid) { return; }
-        self.updateSupplier();
-        cleanFormMessages(form);
-        self.cleanData();
-        self.isSupplierToBeUpdated = false;
-    }
-
-
-    self.executeWhenCancelButtonClicked = function (form) {
-        cleanFormMessages(form);
-        self.cleanData();
-        self.isSupplierToBeUpdated = false;
-        self.displayForm = false;
-    }
-
-    self.executeWhenCadastrarButtonClicked = function () {
-        self.displayForm = true;
-    }
-
-    function disableSupplierToBeUpdated() {
-        self.isSupplierToBeUpdated = false;
-    }
-
-    self.enableRegisterTemplate = function () {
-        self.tempSupplier = {};
-    }
-
-    self.cleanData = function () {
-        self.tempSupplier = {};
-    }
-
-    function executeAfterHttpRequest() {
-        self.cleanData();
-        self.getAllSuppliers();
-    }
-
-    function cleanFormMessages(form) {
-        form.$submitted = false;
-        form.$setUntouched();
-    }
-    function exceptionHandler(error){
-        let match = /p0=([^&]+)/.exec(error.message);
-
-                if (match && match[1]) {
-                    let mensagem = decodeURIComponent(match[1]);
-                    swal(mensagem, "", "warning");
-                }
-    }
 
     $scope.$watch('mainCtrl.displayForm', function (newValue, oldValue) {
         if (newValue !== oldValue) {
@@ -159,21 +168,12 @@ app.controller('MainController', ['$scope', '$timeout', 'supplierService', funct
         }
     });
 
-    $scope.init = function () {
+    // Initialization
+
+    function init() {
         self.isSupplierToBeUpdated = false;
         self.tempSupplier = {};
         self.getAllSuppliers();
-    };
-    $scope.init();
-
-    function enableCleave() {
-        angular.element(document).ready(function () {
-            let cleave = new Cleave('.cnpj', {
-                delimiters: ['.', '.', '/', '-'],
-                blocks: [2, 3, 3, 4, 2],
-                numericOnly: true
-            });
-        });
     }
-
+    init();
 }]);

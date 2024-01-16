@@ -57,7 +57,7 @@ public class SupplierRepository implements ISupplierRepository{
         try {
             return entityManager.find(Supplier.class,id);
         }catch (Exception e){
-            throw new PersistenceException("Erro no banco de dados");
+            throw new PersistenceException("Erro ao buscar supplier pelo id");
         }
     }
 

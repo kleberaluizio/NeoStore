@@ -31,7 +31,7 @@
 
     <suppliers ng-include="'app/component/paginated-suppliers.template.html'"></suppliers>
 
-    <button ng-if="!mainCtrl.displayForm" type="reset" class="btn btn-primary btn_body" id="button" ng-click="mainCtrl.executeWhenCadastrarButtonClicked()">Cadastrar novo fornecedor</button>
+    <button ng-if="!mainCtrl.displayForm" type="reset" class="btn btn-primary btn_body" id="button" ng-click="mainCtrl.openForm()">Cadastrar novo fornecedor</button>
 
     <div ng-if="mainCtrl.displayForm" class="container">
         <h3 class="text-center py-1"> {{ mainCtrl.isSupplierToBeUpdated ?  'Atualizar Fornecedor' : 'Cadastrar Fornecedor' }}</h3>
@@ -79,10 +79,10 @@
             </div>
             <div class="py-4">
                 <button type="button" class="btn btn-success"
-                    ng-click="mainCtrl.isSupplierToBeUpdated? mainCtrl.executeWhenUpdateButtonClicked(formulario): mainCtrl.createSupplier(formulario) ">
+                    ng-click="mainCtrl.isSupplierToBeUpdated? mainCtrl.submitUpdateForm(formulario): mainCtrl.createSupplier(formulario) ">
                     {{ mainCtrl.isSupplierToBeUpdated ?  'Atualizar' : 'Cadastrar'}}
                 </button>
-                <button type="reset" class="btn btn-primary" ng-click="mainCtrl.executeWhenCancelButtonClicked(formulario)">Cancelar</button>
+                <button type="reset" class="btn btn-primary" ng-click="mainCtrl.closeForm(formulario)">Cancelar</button>
                 
             </div>
         </form>
